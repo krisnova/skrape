@@ -55,7 +55,7 @@ for target in $list; do
 done
 
 echo "Creating skrape.tgz..."
-tar -czvf skrape.tgz $f 2>&1 | echo
+tar -czvf skrape.tgz $tmpf 2>&1 | echo
 echo "  -> [skrape.tgz]"
 echo ""
 
