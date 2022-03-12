@@ -1,0 +1,63 @@
+#!/bin/bash
+
+tmpf="/tmp/skrape"
+mkdir -p $tmpf
+
+# Toggle nmap command
+nmap=0
+
+function help() {
+    echo ""
+    echo "=========================================================="
+    echo  " ███╗   ██╗ ██████╗ ██╗   ██╗ █████╗  "
+    echo  " ████╗  ██║██╔═████╗██║   ██║██╔══██╗ "
+    echo  " ██╔██╗ ██║██║██╔██║██║   ██║███████║ "
+    echo  " ██║╚██╗██║████╔╝██║╚██╗ ██╔╝██╔══██║ "
+    echo  " ██║ ╚████║╚██████╔╝ ╚████╔╝ ██║  ██║ "
+    echo  " ╚═╝  ╚═══╝ ╚═════╝   ╚═══╝  ╚═╝  ╚═╝ "
+    echo "=========================================================="
+    echo "[skrape] is an internet snapshot tool"
+    echo ""
+    echo "[author] kris nóva <kris@nivenly.com>"
+    echo ""
+    echo " skrape <list>"
+    echo " skrape $(cat targets)"
+    echo " skrape google.com yahoo.com hotmail.com"
+    echo ""
+    echo "=========================================================="
+    echo ""
+    exit
+}
+
+endpoint() {
+    t=$1
+    f=$tmpf/$t
+    mkdir -p $f
+    echo "Parsing target: ${t} -> ${f}"
+
+    dig +trace $t > $f/dig
+    if [ "$nmap" -eq "1" ]; then
+        nmap -oX $f/nmap -T4 -A $t
+    fi
+    curl -v -L -s -m 1 $t -o $f/curl.payload 2>&1 | cat > $f/curl.meta
+    whois $t > $f/whois
+    traceroute -w 1 $t > $f/traceroute
+}
+
+if [ -z $1 ];then
+    help
+fi
+
+list=$@
+for target in $list; do
+    echo "Scanning $target..."
+    endpoint $target
+done
+
+echo "Creating skrape.tgz..."
+tar -czvf skrape.tgz $f 2>&1 | echo
+echo "  -> [skrape.tgz]"
+echo ""
+
+
+
