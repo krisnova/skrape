@@ -2,7 +2,7 @@
 
 Snapshot the internet from a shell. 
 
-![Screenshot from 2022-03-12 16-33-33](https://user-images.githubusercontent.com/13757818/158035820-36fe726e-a525-4761-869e-e7d603344bb2.png)
+<p align="center"><img src="https://user-images.githubusercontent.com/13757818/158035820-36fe726e-a525-4761-869e-e7d603344bb2.png" width="360"></p>
 
 ### Targets
 
